@@ -1,0 +1,168 @@
+[
+  {
+    "ticket": "F-01",
+    "test": "the home page names the parcel room and says what LockerLine is",
+    "criterion": 0,
+    "what_should_happen": "When the app opens on the home page, a small line names the building and its parcel room. The big heading reads \"Forty-eight lockers.\" with \"No notebook.\" on its second line, and a short paragraph says what couriers, residents and the caretaker do.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "Sunrise Heights · Tower A parcel room",
+      "Forty-eight lockers.",
+      "No notebook.",
+      "Couriers get a locker in seconds, residents open it with a code that runs out, and the caretaker can see every locker, and every parcel's story, at a glance."
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "on an empty wall the counts read 48 lockers, 48 free right now and 0 holding parcels",
+    "criterion": 1,
+    "what_should_happen": "On a fresh start every locker is free. Once the home page has read the wall, its three counts read 48 lockers, 48 free right now and 0 holding parcels.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "lockers",
+      "free right now",
+      "holding parcels"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "with parcels in D01 and D21 the counts read 48 lockers, 46 free right now and 2 holding parcels",
+    "criterion": 2,
+    "what_should_happen": "A small parcel sits in D01 and a medium one in D21 before the page opens. The counts come from the real wall, so they read 48 lockers, 46 free right now and 2 holding parcels.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "lockers",
+      "free right now",
+      "holding parcels"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "criterion": 2,
+    "checked_by": "browser",
+    "reason": "Whether the first small door in the picture looks like it is holding is a colour and a drawing; the picture is hidden from screen readers."
+  },
+  {
+    "ticket": "F-01",
+    "test": "the picture shows the small doors D01 to D09 and the large doors D41 to D44, and nothing else",
+    "criterion": 3,
+    "what_should_happen": "The small picture of the wall shows exactly thirteen doors. They are the small doors D01 to D09 and the large doors D41 to D44, and no other door number appears on the page.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/components/Locker.jsx"
+    ],
+    "exact_words": [
+      "D01",
+      "D09",
+      "D41",
+      "D44"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "the picture is only a picture: clicking a door does nothing",
+    "criterion": 3,
+    "what_should_happen": "Clicking a door in the picture, small or large, does nothing. The address stays on the home page and no panel opens.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/components/Locker.jsx"
+    ],
+    "exact_words": [
+      "D01",
+      "D41",
+      "Who are you today?"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "criterion": 3,
+    "checked_by": "browser",
+    "reason": "Three rows of three small doors and two rows of two large ones is a layout, and each door's free or holding look is a colour; a pretend browser has neither."
+  },
+  {
+    "ticket": "F-01",
+    "test": "before the wall answers the counts show 0 and the picture has no doors, then both fill in",
+    "criterion": 4,
+    "what_should_happen": "In the first moment, before the wall has answered, the counts show 0 and the picture has no doors at all. A moment later they fill in by themselves: 48 lockers, 48 free right now, and the doors appear.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/hooks/useLoad.js"
+    ],
+    "exact_words": [
+      "lockers",
+      "free right now",
+      "D01"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "under \"Who are you today?\" there is one card each for Farida, Imran and Mrs Rao",
+    "criterion": 5,
+    "what_should_happen": "Under \"Who are you today?\" a line says that each person sees their own screens. There are three cards, Farida the caretaker, Imran the courier and Mrs Rao the resident, each with its line about what the person does and \"Continue as\" with the name.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Who are you today?",
+      "Each person sees their own screens. Everything they do changes the same wall.",
+      "Farida",
+      "Caretaker",
+      "Runs the parcel room. Sees every locker, every parcel and the rules the wall follows.",
+      "Imran",
+      "Courier",
+      "Arrives with a bag of parcels. Asks for a locker by size and flat, and gets one.",
+      "Mrs Rao",
+      "Resident",
+      "Gets a code when a parcel arrives. Keys it in at the lobby and the locker opens.",
+      "Continue as Farida",
+      "Continue as Imran",
+      "Continue as Mrs Rao"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "clicking Farida's card goes to /caretaker/wall",
+    "criterion": 6,
+    "what_should_happen": "Each person card is one link. Clicking Farida's card takes the address to /caretaker/wall.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Continue as Farida"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "clicking Imran's card goes to /courier",
+    "criterion": 7,
+    "what_should_happen": "Each person card is one link. Clicking Imran's card takes the address to /courier.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Continue as Imran"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "clicking Mrs Rao's card goes to /resident",
+    "criterion": 8,
+    "what_should_happen": "Each person card is one link. Clicking Mrs Rao's card takes the address to /resident.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Continue as Mrs Rao"
+    ]
+  }
+]

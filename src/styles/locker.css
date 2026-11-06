@@ -1,0 +1,222 @@
+/* A locker door in brushed aluminium over a dark recess. The door hinges on its left edge, so an
+   open locker swings out in 3D and shows what is (or was) inside. */
+.locker {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: #24272b;
+  perspective: 700px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, .55), 0 1px 0 rgba(255, 255, 255, .7);
+  text-align: left;
+  animation: locker-in .5s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 14ms);
+}
+.locker.size-S { height: 62px; }
+.locker.size-M { height: 92px; }
+.locker.size-L { height: 140px; }
+@keyframes locker-in { from { opacity: 0; transform: translateY(6px); } }
+
+.locker-recess {
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 0%, #3a3f45 0%, #15171a 70%);
+}
+.locker-parcel {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 10%;
+  height: 52%;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #d8b98d, var(--kraft));
+  box-shadow: inset 0 -6px 10px rgba(0, 0, 0, .18);
+}
+.locker-parcel::after {          /* packing tape */
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 44%;
+  width: 12%;
+  background: rgba(255, 255, 255, .35);
+}
+
+.locker-door {
+  position: absolute;
+  inset: 2px;
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, .22) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #f3f4f5 0%, #dfe2e5 55%, #cfd3d7 100%);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -2px 0 rgba(0, 0, 0, .07),
+    0 2px 3px rgba(0, 0, 0, .28);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform .55s var(--ease), box-shadow var(--fast);
+}
+.locker.is-holding .locker-door::before {   /* the orange parcel tag down the door's edge */
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--signal);
+}
+
+.locker-plate {
+  position: absolute;
+  top: 6px;
+  left: 7px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: #1f2226;
+  color: #fff;
+  font: 700 10.5px/1.4 var(--mono);
+  letter-spacing: .02em;
+}
+.locker-handle {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  width: 4px;
+  height: 18px;
+  margin-top: -9px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #6b737c, #a9b0b7 50%, #5f666e);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+}
+.locker-light {
+  position: absolute;
+  left: 9px;
+  bottom: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--go-bright);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, .18), 0 0 8px rgba(34, 197, 94, .7);
+}
+.locker.is-holding .locker-light {
+  background: var(--signal);
+  box-shadow: 0 0 0 2px rgba(255, 90, 31, .18), 0 0 8px rgba(255, 90, 31, .7);
+}
+.locker-wait {
+  position: absolute;
+  right: 16px;
+  bottom: 5px;
+  font: 600 10px var(--mono);
+  color: var(--ink-2);
+}
+
+/* interactive lockers */
+button.locker { cursor: pointer; transition: transform var(--fast) var(--ease); }
+button.locker:hover { transform: translateY(-2px); }
+button.locker:hover .locker-door { box-shadow: inset 0 1px 0 #fff, inset 0 -2px 0 rgba(0, 0, 0, .07), 0 8px 14px -4px rgba(0, 0, 0, .35); }
+.locker.is-selected { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+/* open: the door swings out on its hinge */
+.locker.is-open .locker-door { animation: door-open .9s var(--ease) .25s forwards; }
+@keyframes door-open {
+  to {
+    transform: rotateY(-74deg);
+    box-shadow: inset 0 1px 0 #fff, -14px 0 24px rgba(0, 0, 0, .35);
+  }
+}
+
+/* On a phone a small door is too narrow for its waiting time; the door's sheet still shows it. */
+@media (max-width: 640px) {
+  .locker.size-S .locker-wait { display: none; }
+  .locker-wait { right: 13px; }
+}
+
+/* closing: an open door swings back on its hinge, after the parcel has slid in */
+.locker.is-closing .locker-door { animation: door-close .75s var(--ease) .35s both; }
+@keyframes door-close {
+  from { transform: rotateY(-74deg); box-shadow: inset 0 1px 0 #fff, -14px 0 24px rgba(0, 0, 0, .35); }
+  to { transform: rotateY(0); }
+}
+.locker.is-closing .locker-parcel { animation: parcel-in .4s var(--ease) both; }
+@keyframes parcel-in { from { opacity: 0; transform: translate(40%, -12%) scale(.9); } }
+
+/* ══ A cardboard parcel in three faces ══
+   The box occupies (w + d) × (h + d): the front face sits bottom-left; the top and the side are
+   parallelograms cut with clip-path, so the box reads as a real carton seen from above right. */
+.parcel3d {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: calc(var(--w) + var(--d));
+  height: calc(var(--h) + var(--d));
+  filter: drop-shadow(0 10px 10px rgba(70, 45, 10, .28)) drop-shadow(0 2px 2px rgba(70, 45, 10, .25));
+}
+.parcel3d > span { position: absolute; }
+.parcel3d-front {
+  left: 0;
+  top: var(--d);
+  width: var(--w);
+  height: var(--h);
+  background: linear-gradient(180deg, #d2ab78 0%, #c79b62 60%, #bb8f57 100%);
+  box-shadow: inset 0 0 0 1px rgba(120, 80, 30, .25);
+  overflow: hidden;
+}
+.parcel3d-top {
+  inset: 0;
+  background: linear-gradient(135deg, #ecd3a8 0%, #dcb987 100%);
+  clip-path: polygon(0 var(--d), var(--d) 0, calc(var(--w) + var(--d)) 0, var(--w) var(--d));
+}
+.parcel3d-side {
+  inset: 0;
+  background: linear-gradient(180deg, #a87e48 0%, #946c3c 100%);
+  clip-path: polygon(var(--w) var(--d), calc(var(--w) + var(--d)) 0, calc(var(--w) + var(--d)) var(--h), var(--w) calc(var(--h) + var(--d)));
+}
+/* packing tape: across the lid, front to back, then down the front */
+.parcel3d-top-tape {
+  inset: 0;
+  background: rgba(255, 248, 235, .55);
+  clip-path: polygon(
+    calc(var(--w) * .42) var(--d),
+    calc(var(--w) * .42 + var(--d)) 0,
+    calc(var(--w) * .58 + var(--d)) 0,
+    calc(var(--w) * .58) var(--d)
+  );
+}
+.parcel3d-tape {
+  left: 42%;
+  width: 16%;
+  top: 0;
+  height: 42%;
+  background: linear-gradient(180deg, rgba(255, 248, 235, .55), rgba(255, 248, 235, .35));
+}
+/* the shipping label, bottom-left of the front, with a barcode */
+.parcel3d-label {
+  left: 9%;
+  bottom: 12%;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 3px 4px;
+  min-width: 36%;
+  background: #fffdf7;
+  border-radius: 2px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+  transform: rotate(-2deg);
+}
+.parcel3d-label-line { font: 700 8px/1.15 var(--mono); color: var(--ink); white-space: nowrap; }
+.parcel3d-label-line + .parcel3d-label-line { font-weight: 500; color: #4b4f56; }
+.parcel3d-barcode {
+  position: static;
+  display: block;
+  height: 7px;
+  margin-top: 1px;
+  background: repeating-linear-gradient(90deg, #1b1d20 0 1px, transparent 1px 2px, #1b1d20 2px 4px, transparent 4px 5px, #1b1d20 5px 6px, transparent 6px 8px);
+}
+.parcel3d.size-S .parcel3d-label { bottom: 10%; padding: 2px 3px; }
+.parcel3d.size-S .parcel3d-barcode { height: 4px; }
